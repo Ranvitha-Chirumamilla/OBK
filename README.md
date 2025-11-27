@@ -1,16 +1,33 @@
-# React + Vite
+# OBK Chatbot – Floating FAQ Assistant for Our Big Kitchen (OBK)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a **floating FAQ chatbot** built for  
+**Our Big Kitchen (OBK) – Australia**.
 
-Currently, two official plugins are available:
+It appears as a **small button** in the bottom-right corner of a website .  
+When someone clicks the button, a **chat window** opens and answers questions about OBK using a FAQ dataset.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The chatbot is built with:
 
-## React Compiler
+- **React + Vite** (for the UI and logic)
+- **JSON dataset** (for OBK questions and answers)
+- **Netlify** (for hosting and auto-deploy)
+- **Wix custom code** (to embed the chatbot on the OBK site)
+- **`widget.js`** (to create the professional floating widget)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 1. Big Picture – How Everything Fits Together
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+At a high level, this project has **three main parts**:
+
+1. **React chatbot app** (the real chat UI with messages, input box, logic)
+2. **FAQ dataset** (a JSON file with OBK questions and answers)
+3. **Widget script (`widget.js`)** that:
+   - creates the floating orange button on the website  
+   - opens a popup chat window  
+   - loads the React app inside an `iframe`
+
+On the OBK Wix website, we only need to include:
+
+```html
+<script src="https://YOUR-NETLIFY-SITE/widget.js"></script>
