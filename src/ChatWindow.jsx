@@ -1,215 +1,236 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import dataset from "./BigkitchenOBKAustralia_dataset.json";
 
-const COLORS = {
-  primary: "#F7941D",      // Orange (OBK)
-  secondary: "#005A8B",    // Blue  (OBK)
-  light: "#F5F5F5"
-};
-
-export default function ChatWindow({ onClose }) {
+const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi! I'm the OBK Helper. How can I assist you today?" }
+    {
+      sender: "bot",
+      text: "Hi! I'm the OBK Helper. How can I assist you today?",
+    },
   ]);
+
   const [input, setInput] = useState("");
 
+  // ---------------------------
+  // 🔥 MAIN BOT LOGIC (FIXED)
+  // ---------------------------
   const askBot = () => {
     if (!input.trim()) return;
 
     const userMsg = input.toLowerCase().trim();
-    setMessages(prev => [...prev, { sender: "user", text: input }]);
 
-    let answer = null;
+    // Add user message to chat
+    setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
-    // 1️⃣ Greetings
-    const greetings = ["hi", "hello", "hey", "good morning", "good evening"];
-    if (greetings.some(g => userMsg.includes(g))) {
-      answer = "Hello! 👋 How can I help you with OBK today?";
+    let bestAnswer = null;
+    let bestScore = 0;
+
+    // ---------------------------
+    // 1. GREETING DETECTION
+    // ---------------------------
+    const greetings = ["hi", "hello", "hey", "good morning", "good evening", "good afternoon"];
+
+    if (greetings.some((g) => userMsg.includes(g))) {
+      bestAnswer = "Hello! How can I help you with OBK information today?";
     }
 
-    // 2️⃣ Pattern-based logic (fast replies)
-    if (!answer) {
-      if (
-        userMsg.includes("hour") ||
-        userMsg.includes("open") ||
-        userMsg.includes("time") ||
-        userMsg.includes("when")
-      ) {
-        answer = "OBK is open Monday–Friday from 9AM to 2PM.";
-      }
-
-      if (
-        userMsg.includes("location") ||
-        userMsg.includes("address") ||
-        (userMsg.includes("where") && userMsg.includes("obk"))
-      ) {
-        answer = "OBK is located at 54/56 Flood St, Bondi NSW 2026.";
-      }
-
-      if (
-        userMsg.includes("volunteer") ||
-        userMsg.includes("help") ||
-        userMsg.includes("support")
-      ) {
-        answer = "You can volunteer by signing up at www.obk.org.au/volunteer 🙌";
-      }
-
-      if (
-        userMsg.includes("contact") ||
-        userMsg.includes("phone") ||
-        userMsg.includes("number")
-      ) {
-        answer = "You can contact OBK at +61 2 8084 2729 📞";
-      }
-
-      if (
-        userMsg.includes("what is obk") ||
-        (userMsg.includes("obk") && userMsg.includes("what"))
-      ) {
-        answer =
-          "OBK (Our Big Kitchen) is a community-run industrial kitchen in Sydney that cooks and distributes meals for people facing hardship.";
+    // ---------------------------
+    // 2. EXACT MATCH (highest priority)
+    // ---------------------------
+    if (!bestAnswer) {
+      const cleanUser = userMsg.replace(/[^\w\s]/g, "");
+      for (let item of dataset) {
+        const cleanQ = item.question.toLowerCase().replace(/[^\w\s]/g, "");
+        if (cleanQ === cleanUser) {
+          bestAnswer = item.answer;
+          bestScore = 999; // guarantee this wins
+          break;
+        }
       }
     }
 
-    // 3️⃣ Fuzzy dataset matching
-    if (!answer) {
-      let bestScore = 0;
+    // ---------------------------
+    // 3. STARTS-WITH MATCH
+    // ---------------------------
+    if (!bestAnswer) {
+      for (let item of dataset) {
+        if (item.question.toLowerCase().startsWith(userMsg.substring(0, 5))) {
+          bestAnswer = item.answer;
+          bestScore = 500;
+          break;
+        }
+      }
+    }
 
-      dataset.forEach(item => {
+    // ---------------------------
+    // 4. FUZZY MATCH (fallback)
+    // ---------------------------
+    if (!bestAnswer) {
+      dataset.forEach((item) => {
         const q = item.question.toLowerCase();
         let score = 0;
 
-        // Keyword matches
-        q.split(" ").forEach(word => {
-          if (word.length > 3 && userMsg.includes(word)) score += 1;
+        // Keyword scoring
+        q.split(" ").forEach((word) => {
+          if (word.length > 3 && userMsg.includes(word)) {
+            score += 1;
+          }
         });
 
-        // Partial match for typos
-        if (userMsg.includes(q.substring(0, 4))) score += 1;
+        // Partial match
+        if (userMsg.includes(q.substring(0, 5))) {
+          score += 1;
+        }
 
+        // Store highest score
         if (score > bestScore) {
           bestScore = score;
-          answer = item.answer;
+          bestAnswer = item.answer;
         }
       });
     }
 
-    // 4️⃣ Fallback
-    if (!answer) {
-      answer =
-        "I'm still learning! Try asking about hours, location, meals, volunteering, or donations.";
+    // ---------------------------
+    // 5. DEFAULT FALLBACK
+    // ---------------------------
+    if (!bestAnswer) {
+      bestAnswer =
+        "Sorry, I don’t have information about that. Try asking about meals, volunteering, donations, or OBK hours.";
     }
 
-    setMessages(prev => [...prev, { sender: "bot", text: answer }]);
+    // Display bot response
+    setMessages((prev) => [...prev, { sender: "bot", text: bestAnswer }]);
     setInput("");
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "95px",
-        right: "25px",
-        width: "360px",
-        height: "480px",
-        background: "white",
-        borderRadius: "14px",
-        border: `2px solid ${COLORS.secondary}`,
-        boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
-        display: "flex",
-        flexDirection: "column",
-        zIndex: 100000
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          background: COLORS.secondary,
-          padding: "12px",
-          color: "white",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderTopLeftRadius: "12px",
-          borderTopRightRadius: "12px"
-        }}
-      >
-        {/* Title only */}
-        <strong style={{ fontSize: "16px" }}>OBK Chat Assistant</strong>
+    <div style={styles.overlay}>
+      <div style={styles.window}>
+        {/* HEADER */}
+        <div style={styles.header}>
+          <span style={styles.headerTitle}>OBK Chat Assistant</span>
+          <button style={styles.closeBtn} onClick={onClose}>✖</button>
+        </div>
 
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "white",
-            fontSize: 20,
-            cursor: "pointer"
-          }}
-        >
-          ✖
-        </button>
-      </div>
+        {/* MESSAGES */}
+        <div style={styles.messages}>
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              style={{
+                ...styles.messageBubble,
+                alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
+                backgroundColor: msg.sender === "user" ? "#ff9800" : "#e0e0e0",
+                color: msg.sender === "user" ? "white" : "black",
+              }}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
 
-      {/* Chat messages */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: "auto",
-          padding: "10px",
-          background: COLORS.light
-        }}
-      >
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              margin: "10px",
-              padding: "10px",
-              borderRadius: "10px",
-              background: msg.sender === "user" ? "#d1eaff" : "white",
-              textAlign: msg.sender === "user" ? "right" : "left",
-              boxShadow:
-                msg.sender === "bot"
-                  ? "0 1px 4px rgba(0,0,0,0.1)"
-                  : "none"
-            }}
-          >
-            {msg.text}
-          </div>
-        ))}
-      </div>
-
-      {/* Input area */}
-      <div style={{ padding: "10px", display: "flex" }}>
-        <input
-          style={{
-            flex: 1,
-            padding: "10px",
-            borderRadius: "8px",
-            border: "1px solid #ccc"
-          }}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && askBot()}
-          placeholder="Type your question..."
-        />
-        <button
-          onClick={askBot}
-          style={{
-            padding: "10px 14px",
-            marginLeft: "6px",
-            borderRadius: "8px",
-            border: "none",
-            background: COLORS.primary,
-            color: "white",
-            cursor: "pointer"
-          }}
-        >
-          Send
-        </button>
+        {/* INPUT AREA */}
+        <div style={styles.inputArea}>
+          <input
+            style={styles.input}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your question..."
+            onKeyDown={(e) => e.key === "Enter" && askBot()}
+          />
+          <button style={styles.sendBtn} onClick={askBot}>
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+// ---------------------------
+// 🎨 STYLES
+// ---------------------------
+const styles = {
+  overlay: {
+    position: "fixed",
+    bottom: "80px",
+    right: "20px",
+    zIndex: 9999,
+  },
+
+  window: {
+    width: "350px",
+    height: "500px",
+    background: "white",
+    borderRadius: "10px",
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+    overflow: "hidden",
+  },
+
+  header: {
+    background: "#01579b",
+    padding: "12px",
+    display: "flex",
+    justifyContent: "space-between",
+    color: "white",
+    fontWeight: "bold",
+    alignItems: "center",
+  },
+
+  headerTitle: {
+    fontSize: "16px",
+  },
+
+  closeBtn: {
+    background: "transparent",
+    border: "none",
+    color: "white",
+    fontSize: "18px",
+    cursor: "pointer",
+  },
+
+  messages: {
+    flex: 1,
+    padding: "12px",
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  },
+
+  messageBubble: {
+    padding: "10px 14px",
+    borderRadius: "10px",
+    maxWidth: "75%",
+    fontSize: "14px",
+  },
+
+  inputArea: {
+    display: "flex",
+    padding: "10px",
+    borderTop: "1px solid #ccc",
+    background: "#fafafa",
+  },
+
+  input: {
+    flex: 1,
+    padding: "8px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+  },
+
+  sendBtn: {
+    background: "#ff9800",
+    border: "none",
+    color: "white",
+    padding: "10px 16px",
+    marginLeft: "8px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+};
+
+export default ChatWindow;
