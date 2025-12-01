@@ -1,73 +1,73 @@
 [
-    {
-      "question": "Where does the food come from?",
-      "answer": "Our produce is donated by several local organisations like SecondBite. These groups collect excess or imperfect food that would otherwise go to waste. To ensure meals are nutritionally balanced, we purchase protein from local markets."
-    },
-    {
-      "question": "What types of meals do you make?",
-      "answer": "We make wholesome, balanced hot meals based on what we receive from donors. Common meals include stews, curries, soups, and stir-fries. We take feedback from recipients to ensure meals are enjoyable."
-    },
-    {
-      "question": "Are the meals nutritious?",
-      "answer": "Yes! Nutritious, plant-based hot meals are our specialty. OBK works with top Australian nutritionists to ensure every meal is wholesome and delicious."
-    },
-    {
-      "question": "How many meals do you give out per year?",
-      "answer": "In 2021, OBK staff and volunteers cooked and distributed over 250,000 meals across New South Wales."
-    },
-    {
-      "question": "Where do the meals go?",
-      "answer": "We provide meals to many charities such as Adra Community Centre, Asylum Seekers Centre, Bear Cottage, Cancer Council, Mission Australia, St Vincent's Health, Wayside Chapel, Vinnies CEO Sleepout, and many more. Anyone in need can walk in — no questions asked."
-    },
-    {
-      "question": "Do you see a growing demand for meal requests?",
-      "answer": "Yes, OBK sees an increase in demand every single year."
-    },
-    {
-      "question": "How does OBK differ from other food charities?",
-      "answer": "OBK focuses on connection and empowerment. We bring people together, turn recipients into givers, and create a community through cooking and giving."
-    },
-    {
-      "question": "Does OBK operate nationally?",
-      "answer": "Currently OBK has one kitchen in Bondi, NSW, but aims to expand across Australia."
-    },
-    {
-      "question": "Can anyone come in?",
-      "answer": "Yes! Everyone is always welcome. OBK considers the kitchen the community's home."
-    },
-    {
-      "question": "How do I volunteer?",
-      "answer": "Create a volunteer profile on the OBK website. Once created, select any available timeslot or event. Volunteers over 18 must get a Working With Children Check."
-    },
-    {
-      "question": "How can I help?",
-      "answer": "You can help by booking an event, volunteering your time, or donating equipment, services, or funds."
-    },
-    {
-      "question": "Are you partners with any other charities?",
-      "answer": "Yes. OBK partners with many charities and contributors. You can view all partners here: https://www.obk.org.au/our-contributors"
-    },
-    {
-      "question": "Charities you support",
-      "answer": "OBK supports charities such as ASC, Cancer Council, Gift of Life, Montefiore, Ted Noffs Foundation, Stand Up, Sydney Children’s Hospitals Network, Vinnies CEO Sleepout, and many others."
-    },
-    {
-      "question": "Can I donate food?",
-      "answer": "Yes, but regulations and kosher requirements mean not all food can be accepted. OBK is happy to inspect donated produce."
-    },
-    {
-      "question": "If I need food, how do I get it?",
-      "answer": "Call (02) 8084 2729 and OBK will help."
-    },
-    {
-      "question": "Where is OBK located?",
-      "answer": "36 Flood Street, Bondi NSW 2026, Sydney, Australia."
-    },
-    {
-      "question": "How can I contact OBK?",
-      "answer": "Phone: (02) 8084 2729 | Website: https://www.obk.org.au"
-    },
-     {
+  {
+    "question": "Where does the food come from?",
+    "answer": "Our produce is donated by several local organisations like SecondBite. These groups collect excess or imperfect food that would otherwise go to waste. To ensure meals are nutritionally balanced, we purchase protein from local markets."
+  },
+  {
+    "question": "What types of meals do you make?",
+    "answer": "We make wholesome, balanced hot meals based on what we receive from donors. Common meals include stews, curries, soups, and stir-fries. We take feedback from recipients to ensure meals are enjoyable."
+  },
+  {
+    "question": "Are the meals nutritious?",
+    "answer": "Yes! Nutritious, plant-based hot meals are our specialty. OBK works with top Australian nutritionists to ensure every meal is wholesome and delicious."
+  },
+  {
+    "question": "How many meals do you give out per year?",
+    "answer": "In 2021, OBK staff and volunteers cooked and distributed over 250,000 meals across New South Wales."
+  },
+  {
+    "question": "Where do the meals go?",
+    "answer": "We provide meals to many charities such as Adra Community Centre, Asylum Seekers Centre, Bear Cottage, Cancer Council, Mission Australia, St Vincent's Health, Wayside Chapel, Vinnies CEO Sleepout, and many more. Anyone in need can walk in — no questions asked."
+  },
+  {
+    "question": "Do you see a growing demand for meal requests?",
+    "answer": "Yes, OBK sees an increase in demand every single year."
+  },
+  {
+    "question": "How does OBK differ from other food charities?",
+    "answer": "OBK focuses on connection and empowerment. We bring people together, turn recipients into givers, and create a community through cooking and giving."
+  },
+  {
+    "question": "Does OBK operate nationally?",
+    "answer": "Currently OBK has one kitchen in Bondi, NSW, but aims to expand across Australia."
+  },
+  {
+    "question": "Can anyone come in?",
+    "answer": "Yes! Everyone is always welcome. OBK considers the kitchen the community's home."
+  },
+  {
+    "question": "How do I volunteer?",
+    "answer": "Create a volunteer profile on the OBK website. Once created, select any available timeslot or event. Volunteers over 18 must get a Working With Children Check (WWCC)."
+  },
+  {
+    "question": "How can I help?",
+    "answer": "You can help by booking an event, volunteering your time, or donating equipment, services, or funds."
+  },
+  {
+    "question": "Are you partners with any other charities?",
+    "answer": "Yes. OBK partners with many charities and contributors. You can view all partners here: https://www.obk.org.au/our-contributors"
+  },
+  {
+    "question": "Charities you support",
+    "answer": "OBK supports charities such as ASC, Cancer Council, Gift of Life, Montefiore, Ted Noffs Foundation, Stand Up, Sydney Children’s Hospitals Network, Vinnies CEO Sleepout, and many others."
+  },
+  {
+    "question": "Can I donate food?",
+    "answer": "Yes, but regulations and kosher requirements mean not all food can be accepted. OBK is happy to inspect donated produce."
+  },
+  {
+    "question": "If I need food, how do I get it?",
+    "answer": "Call (02) 8084 2729 and OBK will help."
+  },
+  {
+    "question": "Where is OBK located?",
+    "answer": "36 Flood Street, Bondi NSW 2026, Sydney, Australia."
+  },
+  {
+    "question": "How can I contact OBK?",
+    "answer": "Phone: (02) 8084 2729 | Website: https://www.obk.org.au"
+  },
+  {
     "question": "What do you do at Our Big Kitchen?",
     "answer": "OBK is a community run, non-denominational, industrial kitchen where meals are prepared for distribution to needy people across Sydney."
   },
@@ -77,7 +77,7 @@
   },
   {
     "question": "Is there a cost per program?",
-    "answer": "Yes, kindly check our website – <a href=\"https://www.obk.org.au/group-events\" target=\"_blank\" rel=\"noopener noreferrer\">Cook for a Cause</a>."
+    "answer": "Yes, kindly check our website – Cook for a Cause: https://www.obk.org.au/group-events"
   },
   {
     "question": "What do you do at The Big Kitchen?",
@@ -145,7 +145,7 @@
   },
   {
     "question": "How do we make a donation?",
-    "answer": "You can donate via the OBK website or send a bank transfer and email info@obk.org.au."
+    "answer": "You can donate via the OBK website: https://www.obk.org.au/corporate-team-building?form=FUNQUSKFNBE or send a bank transfer and email info@obk.org.au."
   },
   {
     "question": "Can we take photos?",
@@ -155,22 +155,13 @@
     "question": "Who do we contact for questions?",
     "answer": "Email info@obk.org.au or call (02) 8084 2729."
   },
-
-  // ---------------------------
-  // GENERAL VOLUNTEER FAQS
-  // ---------------------------
-
   {
     "question": "What is Our Big Kitchen?",
     "answer": "OBK is a community-run, kosher-certified industrial kitchen in Bondi that prepares and distributes meals to people in need."
   },
   {
-    "question": "Where is OBK located?",
-    "answer": "36 Flood Street, Bondi NSW 2026."
-  },
-  {
     "question": "What do volunteers do?",
-    "answer": "Volunteers help with food prep, packaging, cleaning, organizing, leading group activities, and general kitchen support."
+    "answer": "Volunteers help with food preparation, packaging, cleaning, organizing, leading group activities, and general kitchen support."
   },
   {
     "question": "Do I need cooking experience?",
@@ -182,7 +173,7 @@
   },
   {
     "question": "Is there a minimum age to volunteer?",
-    "answer": "Yes. Individual volunteers must be 18+. Ages 15+ allowed with a parent. Exceptions for Duke of Ed and school community service programs."
+    "answer": "Yes. Individual volunteers must be 18+. Ages 15+ may volunteer with a parent. Exceptions apply for Duke of Ed and school community service programs."
   },
   {
     "question": "Are there requirements to volunteer?",
@@ -190,7 +181,7 @@
   },
   {
     "question": "How long are volunteer shifts?",
-    "answer": "Shifts are 2-3 hours. Morning 8:30-12 PM, Midday 12-3 PM, Afternoon 3-5 PM (Tue-Fri)."
+    "answer": "Shifts are 2–3 hours. Morning: 8:30 AM – 12 PM. Midday: 12 PM – 3 PM. Afternoon: 3 PM – 5 PM (Tue–Fri)."
   },
   {
     "question": "How do I book a volunteer shift?",
@@ -198,7 +189,7 @@
   },
   {
     "question": "How do I register as a volunteer?",
-    "answer": "Use the online link: https://obk.my.site.com/volunteer-sign-up"
+    "answer": "Use the online link: https://obk.my.site.com/volunteer-sign-up."
   },
   {
     "question": "Is there a cost to volunteer?",
@@ -210,24 +201,19 @@
   },
   {
     "question": "Can I volunteer with a friend or family member?",
-    "answer": "Yes. Recommend WWCC for anyone 18+. Contact volunteers@obk.org.au."
+    "answer": "Yes. A valid WWCC is recommended for anyone 18+. Contact volunteers@obk.org.au."
   },
-
-  // ---------------------------
-  // DUKE OF ED FAQs
-  // ---------------------------
-
   {
     "question": "Does OBK accept Duke of Ed volunteers?",
     "answer": "Yes! OBK supports students participating in the Duke of Edinburgh program."
   },
   {
     "question": "What tasks do Duke of Ed volunteers do?",
-    "answer": "Meal prep, dishwashing, cleaning, packing meals, watering plants, and organizing the kitchen."
+    "answer": "They help with meal preparation, dishwashing, cleaning, packing meals, watering plants, and organizing the kitchen."
   },
   {
     "question": "What is the Duke of Ed volunteer schedule?",
-    "answer": "Monday-Thursday, 3:30 PM - 4:30 PM. Contact volunteers@obk.org.au for exceptions."
+    "answer": "Monday to Thursday, 3:30 PM – 4:30 PM. Contact volunteers@obk.org.au for exceptions."
   },
   {
     "question": "Will OBK sign my Duke of Ed record book?",
@@ -235,6 +221,6 @@
   },
   {
     "question": "How do I schedule my Duke of Ed hours?",
-    "answer": "Email volunteers@obk.org.au with your availability. Weekly shifts recommended."
+    "answer": "Email volunteers@obk.org.au with your availability. Weekly shifts are recommended."
   }
-]  
+]
