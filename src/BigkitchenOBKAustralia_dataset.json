@@ -66,5 +66,175 @@
     {
       "question": "How can I contact OBK?",
       "answer": "Phone: (02) 8084 2729 | Website: https://www.obk.org.au"
-    }
-  ]  
+    },
+     {
+    "question": "What do you do at Our Big Kitchen?",
+    "answer": "OBK is a community run, non-denominational, industrial kitchen where meals are prepared for distribution to needy people across Sydney."
+  },
+  {
+    "question": "What programs do you have?",
+    "answer": "OBK offers Corporate Team Building Events, School Programs, Private Events and Parties, and Kitchen Hire."
+  },
+  {
+    "question": "Is there a cost per program?",
+    "answer": "Yes, kindly check our website – <a href=\"https://www.obk.org.au/group-events\" target=\"_blank\" rel=\"noopener noreferrer\">Cook for a Cause</a>."
+  },
+  {
+    "question": "What do you do at The Big Kitchen?",
+    "answer": "OBK runs corporate and community volunteering sessions where groups help prepare, cook, and pack meals for people in need."
+  },
+  {
+    "question": "What kind of kitchen do you have?",
+    "answer": "OBK is an industrial kitchen that is fully certified—Kosher, HACCP, and Halal."
+  },
+  {
+    "question": "What are your session times?",
+    "answer": "Morning Session: 9:00 AM - 12:00 PM. Afternoon Session: 12:30 PM - 3:00 PM."
+  },
+  {
+    "question": "Do you have closed days?",
+    "answer": "OBK is closed on Saturdays in observance of Shabbat Day."
+  },
+  {
+    "question": "How many people can we bring?",
+    "answer": "OBK can accommodate up to 60 participants, provided no other groups are booked in the same session. Minimum group size is 8 people."
+  },
+  {
+    "question": "What should we wear?",
+    "answer": "Closed-toe shoes, comfortable clothing, no loose jewelry, and long pants."
+  },
+  {
+    "question": "Do we need to bring anything?",
+    "answer": "No. All equipment, ingredients, and safety gear are provided."
+  },
+  {
+    "question": "Is there parking available?",
+    "answer": "Yes, limited onsite parking is available, along with nearby street parking."
+  },
+  {
+    "question": "When is the payment due?",
+    "answer": "Payment should be completed before the due date on your invoice."
+  },
+  {
+    "question": "What payment methods do you accept?",
+    "answer": "OBK accepts bank transfers and credit card payments via a payment link."
+  },
+  {
+    "question": "Can we change our group size?",
+    "answer": "Yes, but please provide the final count at least one week before your event."
+  },
+  {
+    "question": "Can we cancel or reschedule?",
+    "answer": "Yes, but OBK appreciates as much advance notice as possible."
+  },
+  {
+    "question": "Do you offer refunds?",
+    "answer": "No refunds are issued. OBK provides a credit note valid for 12 months."
+  },
+  {
+    "question": "Will food be provided for volunteers?",
+    "answer": "No, but refreshments are available. Optional lunch add-on: $30 + GST per person. Food platters are also available."
+  },
+  {
+    "question": "Can children participate?",
+    "answer": "Yes, children 5+ may join with a supervising parent/guardian or via school/OOSH programs."
+  },
+  {
+    "question": "Do you have accessibility options?",
+    "answer": "Yes, the kitchen and workstations are accessible. Please inform OBK of any specific needs."
+  },
+  {
+    "question": "How do we make a donation?",
+    "answer": "You can donate via the OBK website or send a bank transfer and email info@obk.org.au."
+  },
+  {
+    "question": "Can we take photos?",
+    "answer": "Yes! Please avoid photographing other groups or staff without permission. Tag OBK on social media."
+  },
+  {
+    "question": "Who do we contact for questions?",
+    "answer": "Email info@obk.org.au or call (02) 8084 2729."
+  },
+
+  // ---------------------------
+  // GENERAL VOLUNTEER FAQS
+  // ---------------------------
+
+  {
+    "question": "What is Our Big Kitchen?",
+    "answer": "OBK is a community-run, kosher-certified industrial kitchen in Bondi that prepares and distributes meals to people in need."
+  },
+  {
+    "question": "Where is OBK located?",
+    "answer": "36 Flood Street, Bondi NSW 2026."
+  },
+  {
+    "question": "What do volunteers do?",
+    "answer": "Volunteers help with food prep, packaging, cleaning, organizing, leading group activities, and general kitchen support."
+  },
+  {
+    "question": "Do I need cooking experience?",
+    "answer": "No. All skill levels are welcome, and OBK staff will guide you."
+  },
+  {
+    "question": "What should I wear to volunteer?",
+    "answer": "Closed-toe shoes only, no activewear, no sleeveless shirts. Caps, head coverings, and aprons will be provided."
+  },
+  {
+    "question": "Is there a minimum age to volunteer?",
+    "answer": "Yes. Individual volunteers must be 18+. Ages 15+ allowed with a parent. Exceptions for Duke of Ed and school community service programs."
+  },
+  {
+    "question": "Are there requirements to volunteer?",
+    "answer": "Yes. Volunteers aged 18+ must have a valid Working With Children Check (WWCC)."
+  },
+  {
+    "question": "How long are volunteer shifts?",
+    "answer": "Shifts are 2-3 hours. Morning 8:30-12 PM, Midday 12-3 PM, Afternoon 3-5 PM (Tue-Fri)."
+  },
+  {
+    "question": "How do I book a volunteer shift?",
+    "answer": "Email volunteers@obk.org.au to check availability and book your session."
+  },
+  {
+    "question": "How do I register as a volunteer?",
+    "answer": "Use the online link: https://obk.my.site.com/volunteer-sign-up"
+  },
+  {
+    "question": "Is there a cost to volunteer?",
+    "answer": "No. Volunteering is free. Volunteers aged 18+ must have a valid WWCC."
+  },
+  {
+    "question": "How do I track volunteer hours?",
+    "answer": "Hours are tracked through the OBK volunteer portal. WWCC holders are automatically added."
+  },
+  {
+    "question": "Can I volunteer with a friend or family member?",
+    "answer": "Yes. Recommend WWCC for anyone 18+. Contact volunteers@obk.org.au."
+  },
+
+  // ---------------------------
+  // DUKE OF ED FAQs
+  // ---------------------------
+
+  {
+    "question": "Does OBK accept Duke of Ed volunteers?",
+    "answer": "Yes! OBK supports students participating in the Duke of Edinburgh program."
+  },
+  {
+    "question": "What tasks do Duke of Ed volunteers do?",
+    "answer": "Meal prep, dishwashing, cleaning, packing meals, watering plants, and organizing the kitchen."
+  },
+  {
+    "question": "What is the Duke of Ed volunteer schedule?",
+    "answer": "Monday-Thursday, 3:30 PM - 4:30 PM. Contact volunteers@obk.org.au for exceptions."
+  },
+  {
+    "question": "Will OBK sign my Duke of Ed record book?",
+    "answer": "Yes, OBK will sign and verify your hours."
+  },
+  {
+    "question": "How do I schedule my Duke of Ed hours?",
+    "answer": "Email volunteers@obk.org.au with your availability. Weekly shifts recommended."
+  }
+]  
