@@ -302,3 +302,5 @@ const styles = {
 };
 
 export default ChatWindow;
+
+
