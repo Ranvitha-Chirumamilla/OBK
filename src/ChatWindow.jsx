@@ -10,16 +10,19 @@ const ChatWindow = ({ onClose }) => {
   ]);
 
   const [input, setInput] = useState("");
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [lastUnknown, setLastUnknown] = useState("");
+  const [showOptions, setShowOptions] = useState(false);
 
   // ---------------------------
-  // 🔥 MAIN BOT LOGIC (FIXED)
+  // 🔥 MAIN BOT LOGIC
   // ---------------------------
   const askBot = () => {
     if (!input.trim()) return;
 
     const userMsg = input.toLowerCase().trim();
 
-    // Add user message to chat
+    // Add user message
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
     let bestAnswer = null;
@@ -29,21 +32,22 @@ const ChatWindow = ({ onClose }) => {
     // 1. GREETING DETECTION
     // ---------------------------
     const greetings = ["hi", "hello", "hey", "good morning", "good evening", "good afternoon"];
-
     if (greetings.some((g) => userMsg.includes(g))) {
+      resetState();
       bestAnswer = "Hello! How can I help you with OBK information today?";
     }
 
     // ---------------------------
-    // 2. EXACT MATCH (highest priority)
+    // 2. EXACT MATCH
     // ---------------------------
     if (!bestAnswer) {
       const cleanUser = userMsg.replace(/[^\w\s]/g, "");
       for (let item of dataset) {
         const cleanQ = item.question.toLowerCase().replace(/[^\w\s]/g, "");
         if (cleanQ === cleanUser) {
+          resetState();
           bestAnswer = item.answer;
-          bestScore = 999; // guarantee this wins
+          bestScore = 999;
           break;
         }
       }
@@ -55,6 +59,7 @@ const ChatWindow = ({ onClose }) => {
     if (!bestAnswer) {
       for (let item of dataset) {
         if (item.question.toLowerCase().startsWith(userMsg.substring(0, 5))) {
+          resetState();
           bestAnswer = item.answer;
           bestScore = 500;
           break;
@@ -63,56 +68,99 @@ const ChatWindow = ({ onClose }) => {
     }
 
     // ---------------------------
-    // 4. FUZZY MATCH (fallback)
+    // 4. FUZZY MATCH
     // ---------------------------
     if (!bestAnswer) {
       dataset.forEach((item) => {
         const q = item.question.toLowerCase();
         let score = 0;
 
-        // Keyword scoring
         q.split(" ").forEach((word) => {
-          if (word.length > 3 && userMsg.includes(word)) {
-            score += 1;
-          }
+          if (word.length > 3 && userMsg.includes(word)) score++;
         });
 
-        // Partial match
-        if (userMsg.includes(q.substring(0, 5))) {
-          score += 1;
-        }
+        if (userMsg.includes(q.substring(0, 5))) score++;
 
-        // Store highest score
         if (score > bestScore) {
           bestScore = score;
           bestAnswer = item.answer;
         }
       });
+
+      if (bestScore > 0) resetState();
+      else bestAnswer = null;
     }
 
     // ---------------------------
-    // 5. DEFAULT FALLBACK
+    // 5. UNKNOWN QUESTION LOGIC
     // ---------------------------
     if (!bestAnswer) {
-      bestAnswer =
-        "Sorry, I don’t have information about that. Try asking about meals, volunteering, donations, or OBK hours.";
+      if (userMsg === lastUnknown) {
+        setAttemptCount((prev) => prev + 1);
+      } else {
+        setAttemptCount(1);
+        setLastUnknown(userMsg);
+      }
+
+      if (attemptCount === 1) {
+        bestAnswer =
+          "Sorry, I don’t have that information — could you rephrase your question?";
+      } else if (attemptCount === 2) {
+        bestAnswer =
+          "I'm still not finding that — could you try asking in a different way?";
+      } else {
+        bestAnswer = "Which would you like to know more about?";
+        setShowOptions(true);
+      }
+
+      setMessages((prev) => [...prev, { sender: "bot", text: bestAnswer }]);
+      setInput("");
+      return;
     }
 
-    // Display bot response
+    // If answer found:
+    resetState();
     setMessages((prev) => [...prev, { sender: "bot", text: bestAnswer }]);
     setInput("");
+  };
+
+  // RESET logic when bot successfully answers
+  const resetState = () => {
+    setAttemptCount(0);
+    setLastUnknown("");
+    setShowOptions(false);
+  };
+
+  // ---------------------------
+  // BUTTON RESPONSE HANDLERS
+  // ---------------------------
+  const handleVolunteerClick = () => {
+    const response =
+      "To learn more about *volunteering individually*, please email our Volunteer Coordinator at **volunteers@obk.org.au**.\n\nIs there anything else I can help you with?";
+
+    setMessages((prev) => [...prev, { sender: "bot", text: response }]);
+    resetState();
+  };
+
+  const handleProgramClick = () => {
+    const response =
+      "To learn more about *program and event details*, please email our Admin team at **info@obk.org.au**.\n\nIs there anything else I can help you with?";
+
+    setMessages((prev) => [...prev, { sender: "bot", text: response }]);
+    resetState();
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.window}>
+        
         {/* HEADER */}
         <div style={styles.header}>
           <span style={styles.headerTitle}>OBK Chat Assistant</span>
           <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
-        {/* MESSAGES */}
+        {/* MESSAGE FEED */}
         <div style={styles.messages}>
           {messages.map((msg, i) => (
             <div
@@ -127,9 +175,21 @@ const ChatWindow = ({ onClose }) => {
               {msg.text}
             </div>
           ))}
+
+          {/* BUTTON OPTIONS */}
+          {showOptions && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "8px" }}>
+              <button style={styles.optionBtn} onClick={handleVolunteerClick}>
+                Volunteering Individually
+              </button>
+              <button style={styles.optionBtn} onClick={handleProgramClick}>
+                Program / Event Details
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* INPUT AREA */}
+        {/* INPUT */}
         <div style={styles.inputArea}>
           <input
             style={styles.input}
@@ -170,7 +230,7 @@ const styles = {
   },
 
   header: {
-    background: "#01579b",
+    background: "#2e7d32",
     padding: "12px",
     display: "flex",
     justifyContent: "space-between",
@@ -230,6 +290,17 @@ const styles = {
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+
+  optionBtn: {
+    background: "#2e7d32",
+    padding: "10px",
+    borderRadius: "6px",
+    border: "none",
+    color: "white",
+    cursor: "pointer",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 };
 
