@@ -14,15 +14,21 @@ const ChatWindow = ({ onClose }) => {
   const [lastUnknown, setLastUnknown] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
+  // Reset fallback logic when correct answer or button is clicked
+  const resetState = () => {
+    setAttemptCount(0);
+    setLastUnknown("");
+    setShowOptions(false);
+  };
+
   // ---------------------------
   // 🔥 MAIN BOT LOGIC
   // ---------------------------
   const askBot = () => {
     if (!input.trim()) return;
-
     const userMsg = input.toLowerCase().trim();
 
-    // Add user message
+    // Add user message to screen
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
     let bestAnswer = null;
@@ -87,29 +93,29 @@ const ChatWindow = ({ onClose }) => {
         }
       });
 
+      // If fuzzy matched but low confidence → treat as match
       if (bestScore > 0) resetState();
       else bestAnswer = null;
     }
 
     // ---------------------------
-    // 5. UNKNOWN QUESTION LOGIC
+    // 5. UNKNOWN QUESTION HANDLING (Correct 3-step fallback)
     // ---------------------------
     if (!bestAnswer) {
-      if (userMsg === lastUnknown) {
-        setAttemptCount((prev) => prev + 1);
-      } else {
-        setAttemptCount(1);
-        setLastUnknown(userMsg);
-      }
+      const newCount = userMsg === lastUnknown ? attemptCount + 1 : 1;
 
-      if (attemptCount === 1) {
+      setLastUnknown(userMsg);
+      setAttemptCount(newCount);
+
+      if (newCount === 1) {
         bestAnswer =
           "Sorry, I don’t have that information — could you rephrase your question?";
-      } else if (attemptCount === 2) {
+      } else if (newCount === 2) {
         bestAnswer =
           "I'm still not finding that — could you try asking in a different way?";
-      } else {
-        bestAnswer = "Which would you like to know more about?";
+      } else if (newCount >= 3) {
+        bestAnswer =
+          "Which would you like to know more about:\n\n👉 Volunteering Individually\n👉 Program / Event Details";
         setShowOptions(true);
       }
 
@@ -118,26 +124,19 @@ const ChatWindow = ({ onClose }) => {
       return;
     }
 
-    // If answer found:
+    // SUCCESS MATCH → RESET ATTEMPTS
     resetState();
     setMessages((prev) => [...prev, { sender: "bot", text: bestAnswer }]);
     setInput("");
   };
 
-  // RESET logic when bot successfully answers
-  const resetState = () => {
-    setAttemptCount(0);
-    setLastUnknown("");
-    setShowOptions(false);
-  };
-
   // ---------------------------
-  // BUTTON RESPONSE HANDLERS
+  // BUTTON HANDLERS
   // ---------------------------
   const handleVolunteerClick = () => {
     const response =
       "To learn more about *volunteering individually*, please email our Volunteer Coordinator at **volunteers@obk.org.au**.\n\nIs there anything else I can help you with?";
-
+    
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
   };
@@ -145,7 +144,7 @@ const ChatWindow = ({ onClose }) => {
   const handleProgramClick = () => {
     const response =
       "To learn more about *program and event details*, please email our Admin team at **info@obk.org.au**.\n\nIs there anything else I can help you with?";
-
+    
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
   };
@@ -160,7 +159,7 @@ const ChatWindow = ({ onClose }) => {
           <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
-        {/* MESSAGE FEED */}
+        {/* MESSAGES */}
         <div style={styles.messages}>
           {messages.map((msg, i) => (
             <div
@@ -176,7 +175,6 @@ const ChatWindow = ({ onClose }) => {
             </div>
           ))}
 
-          {/* BUTTON OPTIONS */}
           {showOptions && (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "8px" }}>
               <button style={styles.optionBtn} onClick={handleVolunteerClick}>
@@ -198,10 +196,9 @@ const ChatWindow = ({ onClose }) => {
             placeholder="Type your question..."
             onKeyDown={(e) => e.key === "Enter" && askBot()}
           />
-          <button style={styles.sendBtn} onClick={askBot}>
-            Send
-          </button>
+          <button style={styles.sendBtn} onClick={askBot}>Send</button>
         </div>
+
       </div>
     </div>
   );
@@ -305,3 +302,4 @@ const styles = {
 };
 
 export default ChatWindow;
+
