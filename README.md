@@ -38,16 +38,37 @@ This project is a floating chatbot designed to help visitors get quick answers a
 5. Fully responsive UI
 6. Easy content updates via dataset JSON
 7. No code needed for regular content changes
+8. Automatic publishing through Github -> Netlify.
 
 ## Important files and descriptions
 
-`src/ChatWindow.jsx`         : Main chatbot logic and interface   
-`src/App.jsx`                : Root component wrapper             
+`src/ChatWindow.jsx`         : Main chatbot logic and interface 
+`src/App.jsx`                : Root component wrapper
 `src/main.jsx`               : Mounting logic for external sites  
-`public/chatbot-widget.js`   : Script used by Wix to load chatbot 
-`BigKitchenOBK_dataset.json` : FAQ dataset file                   
+`public/chatbot-widget.js`   : Script used by Wix to load chatbot
+`BigKitchenOBK_dataset.json` : FAQ dataset file
 
 ## Local Development instructions 
 
 1. Install Dependencies 
    npm install
+2. Start Local development server 
+   npm run dev 
+3. open the app in browser
+   http://localhost:5173/
+
+## Deployment
+   Deployment happens automatically when changes are pushed to the Github repository
+   To push updates give the below git commands 
+   1. create a local branch
+   2. git add *
+   3. git commit -m "update message"
+   4. git push
+   Netlify will detect the changes and publish the latest version.
+
+
+## Future Maintenance
+   1) If you only want to change answers or update information, edit the JSON file, save it, and push it to GitHub.
+    No coding is needed.  
+   2) If you want to change how the chatbot looks or behaves, make the changes, test it locally first, and then push to GitHub.  
+   3) If the chatbot stops appearing on the OBK website, check that the script link is still correct in Wix and refresh the website cache.

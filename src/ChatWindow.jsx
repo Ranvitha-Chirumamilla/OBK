@@ -5,7 +5,7 @@ const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hi! I'm the OBK Helper. How can I assist you today?",
+      text: "Hi! I’m Carrie the Carrot. How can I help you today?",
     },
   ]);
 
@@ -115,7 +115,7 @@ const ChatWindow = ({ onClose }) => {
           "I'm still not finding that — could you try asking in a different way?";
       } else if (newCount >= 3) {
         bestAnswer =
-          "Which would you like to know more about:\n\n👉 Volunteering Individually\n👉 Program / Event Details";
+          "Which would you like to know more about:\n\n Volunteering Individually\n Program / Event Details";
         setShowOptions(true);
       }
 
@@ -155,7 +155,7 @@ const ChatWindow = ({ onClose }) => {
         
         {/* HEADER */}
         <div style={styles.header}>
-          <span style={styles.headerTitle}>OBK Chat Assistant</span>
+          <span style={styles.headerTitle}>OBK Carrie</span>
           <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
