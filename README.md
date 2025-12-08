@@ -42,11 +42,11 @@ This project is a floating chatbot designed to help visitors get quick answers a
 
 ## Important files and descriptions
 
-`src/ChatWindow.jsx`         : Main chatbot logic and interface 
-`src/App.jsx`                : Root component wrapper
-`src/main.jsx`               : Mounting logic for external sites  
-`public/chatbot-widget.js`   : Script used by Wix to load chatbot
-`BigKitchenOBK_dataset.json` : FAQ dataset file
+1) src/ChatWindow.jsx - Main chatbot logic and interface 
+2) src/App.jsx - Root component wrapper
+3) src/main.jsx - Mounting logic for external sites  
+4) public/chatbot-widget.js -Script used by Wix to load chatbot
+5) BigKitchenOBK_dataset.json - FAQ dataset file
 
 ## Local Development instructions 
 
