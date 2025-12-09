@@ -115,7 +115,7 @@ const ChatWindow = ({ onClose }) => {
           "I'm still not finding that — could you try asking in a different way?";
       } else if (newCount >= 3) {
         bestAnswer =
-          "Which would you like to know more about:\n\n Volunteering Individually\n Program / Event/General Details?";
+          "Which would you like to know more about:\n\n Volunteering Individually or Event/General Enquiries?";
         setShowOptions(true);
       }
 
