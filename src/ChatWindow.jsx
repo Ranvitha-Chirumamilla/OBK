@@ -5,7 +5,7 @@ const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hi! I’m Carrie the Carrot. How can I help you today?",
+      text: "Hi! I’m Carrie. How can I help you today?",
     },
   ]);
 
@@ -115,7 +115,7 @@ const ChatWindow = ({ onClose }) => {
           "I'm still not finding that — could you try asking in a different way?";
       } else if (newCount >= 3) {
         bestAnswer =
-          "Which would you like to know more about:\n\n Volunteering Individually\n Program / Event Details";
+          "Which would you like to know more about:\n\n Volunteering Individually\n Program / Event/General Details?";
         setShowOptions(true);
       }
 
@@ -135,7 +135,7 @@ const ChatWindow = ({ onClose }) => {
   // ---------------------------
   const handleVolunteerClick = () => {
     const response =
-      "To learn more about *volunteering individually*, please email our Volunteer Coordinator at **volunteers@obk.org.au**.\n\nIs there anything else I can help you with?";
+      "To learn more about volunteering individually, please email our Volunteer Coordinator at volunteers@obk.org.au.\n\nIs there anything else I can help you with?";
     
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
@@ -143,7 +143,7 @@ const ChatWindow = ({ onClose }) => {
 
   const handleProgramClick = () => {
     const response =
-      "To learn more about *program and event details*, please email our Admin team at **info@obk.org.au**.\n\nIs there anything else I can help you with?";
+      "To learn more about program and event details, please email our Admin team at info@obk.org.au.\n\nIs there anything else I can help you with?";
     
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
@@ -155,7 +155,7 @@ const ChatWindow = ({ onClose }) => {
         
         {/* HEADER */}
         <div style={styles.header}>
-          <span style={styles.headerTitle}>OBK Carrie</span>
+          <span style={styles.headerTitle}>Carrie of OBK</span>
           <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
@@ -302,4 +302,6 @@ const styles = {
 };
 
 export default ChatWindow;
+
+
 
