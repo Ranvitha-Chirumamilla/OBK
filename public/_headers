@@ -1,5 +1,7 @@
 /chatbot-widget.js
-  Access-Control-Allow-Origin: https://www.obk.org.au
-  Access-Control-Allow-Origin: https://obk.org.au
+  Access-Control-Allow-Origin: https://www.obk.org.au https://obk.org.au
   Access-Control-Allow-Methods: GET, OPTIONS
   Access-Control-Allow-Headers: *
+  Access-Control-Allow-Credentials: true
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=86400
