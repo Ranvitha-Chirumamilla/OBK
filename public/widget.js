@@ -36,7 +36,7 @@
   chat.id = "obk-chat-window";
 
   // ⭐ Your LIVE Production URL
-  chat.src = "https://kaleidoscopic-basbousa-1c3fe1.netlify.app/";
+  chat.src = "https://obk-lime.vercel.app/";
 
   chat.style.position = "fixed";
   chat.style.bottom = "90px";
