@@ -5,3 +5,7 @@
   Access-Control-Allow-Credentials: true
   Content-Type: application/javascript
   Cache-Control: public, max-age=86400
+
+/*
+  X-Frame-Options: ALLOW-FROM https://www.obk.org.au
+  Content-Security-Policy: frame-ancestors https://www.obk.org.au https://obk.org.au;
