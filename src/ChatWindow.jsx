@@ -181,7 +181,7 @@ const ChatWindow = ({ onClose }) => {
                 Volunteering Individually
               </button>
               <button style={styles.optionBtn} onClick={handleProgramClick}>
-                Program / Event Details
+               Event Details/General Enquiries
               </button>
             </div>
           )}
