@@ -11,7 +11,9 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// 🔥 Mark chatbot JS as loaded and notify external listeners
+window.chatbotLoaded = true;
+document.dispatchEvent(new Event("OBK_CHATBOT_LOADED"));
+
+// Performance analytics (Optional)
 reportWebVitals();
