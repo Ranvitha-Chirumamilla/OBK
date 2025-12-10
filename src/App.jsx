@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FloatingChatButton from "./FloatingChatButton";
 import ChatWindow from "./ChatWindow";
 
 export default function App() {
   const [open, setOpen] = useState(false);
 
+  // --------- Notify external site chatbot is ready ---------
+  useEffect(() => {
+    window.chatbotLoaded = true;
+    document.dispatchEvent(new Event("OBK_CHATBOT_LOADED"));
+    console.log("🔥 OBK Chatbot Ready (React mounted)");
+  }, []);
+  // ---------------------------------------------------------
+
   return (
     <div style={{ minHeight: "100vh" }}>
-
-      {/* Floating button (only when chat is closed) */}
       {!open && (
         <FloatingChatButton onClick={() => setOpen(true)} />
       )}
-
-      {/* Chat window (only when chat is open) */}
       {open && (
         <ChatWindow onClose={() => setOpen(false)} />
       )}
@@ -23,18 +27,17 @@ export default function App() {
 
 
 // ------------------------------------------------------
-// Make chatbot available to external websites (like Wix)
+// Make chatbot controllable by external websites (Wix / Webflow / Squarespace)
 // ------------------------------------------------------
 window.initObkChatbot = function () {
-  console.log("OBK Chatbot Init Triggered");
+  console.log("⚡ initObkChatbot() called");
 
-  // Avoid duplicate widgets if triggered multiple times
+  // Prevent duplicate widgets
   if (document.getElementById("obk-chatbot-container")) {
-    console.log("Chatbot already exists, skipping mount.");
+    console.log("Chatbot already exists — skipping.");
     return;
   }
 
-  // Create container for React chatbot
   const container = document.createElement("div");
   container.id = "obk-chatbot-container";
   container.style.position = "fixed";
@@ -46,7 +49,7 @@ window.initObkChatbot = function () {
 
   document.body.appendChild(container);
 
-  // Dynamically mount React app into Wix site
+  // Mount the React chatbot inside the container
   import("react-dom/client").then((module) => {
     const root = module.createRoot(container);
     root.render(<App />);
