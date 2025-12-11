@@ -1,13 +1,18 @@
 (function () {
 
-  // HIDE ALL WIX IFRAMES EXCEPT CHATBOT
-  document.querySelectorAll("iframe").forEach(iframe => {
-    if (!iframe.id || iframe.id !== "obk-chat-window") {
-      iframe.style.display = "none";
-    }
+  // 0. REMOVE WIX GHOST APP CONTAINERS
+  const observer = new MutationObserver(() => {
+    document.querySelectorAll("div[id^='comp-'], div[data-testid='app-container'], .TPAContainer").forEach(div => {
+      if (!div.querySelector("#obk-chat-window")) {
+        div.style.display = "none";
+      }
+    });
   });
+  observer.observe(document.body, { childList: true, subtree: true });
 
-  // 1. Floating button
+  // ---------------------------
+  // 1. Create Floating Button
+  // ---------------------------
   const button = document.createElement("div");
   button.id = "obk-floating-button";
   button.innerHTML = `
@@ -35,7 +40,9 @@
   `;
   document.body.appendChild(button);
 
+  // ---------------------------
   // 2. Chat container
+  // ---------------------------
   const container = document.createElement("div");
   container.id = "obk-chat-container";
   container.style.position = "fixed";
@@ -51,7 +58,9 @@
   container.style.overflow = "hidden";
   document.body.appendChild(container);
 
+  // ---------------------------
   // 3. iframe
+  // ---------------------------
   const chat = document.createElement("iframe");
   chat.id = "obk-chat-window";
   chat.src = "https://obk-lime.vercel.app/";
@@ -61,7 +70,9 @@
   chat.style.display = "block";
   container.appendChild(chat);
 
+  // ---------------------------
   // 4. Toggle
+  // ---------------------------
   let isOpen = false;
   button.onclick = () => {
     isOpen = !isOpen;
