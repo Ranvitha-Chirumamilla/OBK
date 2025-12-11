@@ -14,9 +14,6 @@ const ChatWindow = ({ onClose }) => {
   const [lastUnknown, setLastUnknown] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
-  // Detect if running inside OBK iframe
-  const isIframe = window.self !== window.top;
-
   const resetState = () => {
     setAttemptCount(0);
     setLastUnknown("");
@@ -129,14 +126,10 @@ const ChatWindow = ({ onClose }) => {
         {/* HEADER */}
         <div style={styles.header}>
           <span style={styles.headerTitle}>Carrie of OBK</span>
-
-          {/* Hide Close button inside iframe */}
-          {!isIframe && (
-            <button style={styles.closeBtn} onClick={onClose}>✖</button>
-          )}
+          <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
-        {/* Messages */}
+        {/* MESSAGES */}
         <div style={styles.messages}>
           {messages.map((msg, i) => (
             <div
@@ -153,7 +146,7 @@ const ChatWindow = ({ onClose }) => {
           ))}
 
           {showOptions && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "8px" }}>
+            <div style={styles.optionContainer}>
               <button style={styles.optionBtn} onClick={handleVolunteerClick}>
                 Volunteering Individually
               </button>
@@ -164,7 +157,7 @@ const ChatWindow = ({ onClose }) => {
           )}
         </div>
 
-        {/* Input */}
+        {/* INPUT */}
         <div style={styles.inputArea}>
           <input
             style={styles.input}
@@ -181,16 +174,20 @@ const ChatWindow = ({ onClose }) => {
   );
 };
 
+/* ----------------------------------
+   🎨 STYLES — FIXED VERSION
+------------------------------------ */
 const styles = {
   overlay: {
     position: "fixed",
-    bottom: 0,
-    right: 0,
+    bottom: "0px",
+    right: "0px",
     zIndex: 9999,
   },
 
   window: {
-    width: "350px",
+    width: "100%",       // fill iframe width → NO WHITE GAP
+    maxWidth: "400px",   // safe limit on desktop
     height: "500px",
     background: "white",
     borderRadius: "10px",
@@ -261,6 +258,13 @@ const styles = {
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+
+  optionContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    marginTop: "8px",
   },
 
   optionBtn: {
