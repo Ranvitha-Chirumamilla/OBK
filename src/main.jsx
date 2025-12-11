@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+
+// ✅ Add this BEFORE index.css so resets apply globally
+import "./reset.css";
+
 import "./index.css";
 
 const WIDGET_CONTAINER_ID = "obk-chat-widget";
