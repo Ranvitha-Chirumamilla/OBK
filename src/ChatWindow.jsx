@@ -22,6 +22,7 @@ const ChatWindow = ({ onClose }) => {
     const userMsg = input.toLowerCase().trim();
 
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
+
     let bestAnswer = null;
     let bestScore = 0;
 
@@ -65,6 +66,7 @@ const ChatWindow = ({ onClose }) => {
         });
 
         if (userMsg.includes(q.substring(0, 5))) score++;
+
         if (score > bestScore) {
           bestScore = score;
           bestAnswer = item.answer;
@@ -100,14 +102,37 @@ const ChatWindow = ({ onClose }) => {
     setInput("");
   };
 
-  // FINAL FIXED STYLES
+  // -----------------------------------------------------------------------
+  // 🌟 FIX: ENSURE CLOSE BUTTON WORKS INSIDE WIX (iframe → parent)
+  // -----------------------------------------------------------------------
+  const handleClose = () => {
+    if (typeof onClose === "function") {
+      onClose(); // closes internal chat
+    }
+
+    // Send message to parent Wix site to close outer widget
+    try {
+      window.parent.postMessage("OBK_CLOSE_CHAT", "*");
+    } catch (e) {
+      console.error("PostMessage failed", e);
+    }
+  };
+
+  // -----------------------------------------------------------------------
+  // STYLES
+  // -----------------------------------------------------------------------
   const styles = {
-    container: {
+    overlay: {
       position: "fixed",
-      bottom: "20px",
-      right: "20px",
+      bottom: 0,
+      right: 0,
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "flex-end",
       zIndex: 2147483647,
-      pointerEvents: "auto"
+      pointerEvents: "none",
     },
 
     window: {
@@ -118,7 +143,9 @@ const ChatWindow = ({ onClose }) => {
       display: "flex",
       flexDirection: "column",
       boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
-      overflow: "hidden"
+      margin: "20px",
+      zIndex: 2147483647,
+      pointerEvents: "auto",
     },
 
     header: {
@@ -128,15 +155,16 @@ const ChatWindow = ({ onClose }) => {
       justifyContent: "space-between",
       alignItems: "center",
       color: "white",
-      fontWeight: "bold"
+      fontWeight: "bold",
     },
 
     closeBtn: {
       background: "transparent",
       border: "none",
       color: "white",
-      fontSize: "18px",
-      cursor: "pointer"
+      fontSize: "20px",
+      cursor: "pointer",
+      padding: "4px",
     },
 
     messages: {
@@ -145,28 +173,28 @@ const ChatWindow = ({ onClose }) => {
       overflowY: "auto",
       display: "flex",
       flexDirection: "column",
-      gap: "8px"
+      gap: "8px",
     },
 
     messageBubble: {
       padding: "10px 14px",
       borderRadius: "10px",
       maxWidth: "75%",
-      fontSize: "14px"
+      fontSize: "14px",
     },
 
     inputArea: {
       display: "flex",
       padding: "10px",
       borderTop: "1px solid #ccc",
-      background: "#fafafa"
+      background: "#fafafa",
     },
 
     input: {
       flex: 1,
       padding: "8px",
       borderRadius: "6px",
-      border: "1px solid #ccc"
+      border: "1px solid #ccc",
     },
 
     sendBtn: {
@@ -177,16 +205,22 @@ const ChatWindow = ({ onClose }) => {
       marginLeft: "8px",
       borderRadius: "6px",
       cursor: "pointer",
-      fontWeight: "bold"
-    }
+      fontWeight: "bold",
+    },
   };
 
+  // -----------------------------------------------------------------------
+
   return (
-    <div style={styles.container}>
+    <div style={styles.overlay}>
       <div style={styles.window}>
         <div style={styles.header}>
           <span>Carrie of OBK</span>
-          <button style={styles.closeBtn} onClick={onClose}>✖</button>
+
+          {/* FIXED CLOSE BUTTON */}
+          <button style={styles.closeBtn} onClick={handleClose}>
+            ✖
+          </button>
         </div>
 
         <div style={styles.messages}>
@@ -197,7 +231,7 @@ const ChatWindow = ({ onClose }) => {
                 ...styles.messageBubble,
                 alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
                 backgroundColor: msg.sender === "user" ? "#ff9800" : "#e0e0e0",
-                color: msg.sender === "user" ? "white" : "black"
+                color: msg.sender === "user" ? "white" : "black",
               }}
             >
               {msg.text}
