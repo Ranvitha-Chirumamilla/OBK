@@ -1,7 +1,13 @@
 (function () {
-  // ---------------------------
-  // 1. Create Floating Button
-  // ---------------------------
+
+  // HIDE ALL WIX IFRAMES EXCEPT CHATBOT
+  document.querySelectorAll("iframe").forEach(iframe => {
+    if (!iframe.id || iframe.id !== "obk-chat-window") {
+      iframe.style.display = "none";
+    }
+  });
+
+  // 1. Floating button
   const button = document.createElement("div");
   button.id = "obk-floating-button";
   button.innerHTML = `
@@ -29,9 +35,7 @@
   `;
   document.body.appendChild(button);
 
-  // ---------------------------
-  // 2. Create Chat Container
-  // ---------------------------
+  // 2. Chat container
   const container = document.createElement("div");
   container.id = "obk-chat-container";
   container.style.position = "fixed";
@@ -47,29 +51,21 @@
   container.style.overflow = "hidden";
   document.body.appendChild(container);
 
-  // ---------------------------
-  // 3. Create iframe
-  // ---------------------------
+  // 3. iframe
   const chat = document.createElement("iframe");
   chat.id = "obk-chat-window";
-  chat.src = "https://obk-lime.vercel.app/"; 
+  chat.src = "https://obk-lime.vercel.app/";
   chat.style.width = "100%";
   chat.style.height = "100%";
   chat.style.border = "0";
   chat.style.display = "block";
   container.appendChild(chat);
 
-  // ---------------------------
-  // 4. Toggle open/close
-  // ---------------------------
+  // 4. Toggle
   let isOpen = false;
-
-  button.onclick = function () {
+  button.onclick = () => {
     isOpen = !isOpen;
     container.style.display = isOpen ? "block" : "none";
-
-    setTimeout(() => {
-      chat.style.height = "100%";
-    }, 10);
   };
+
 })();
