@@ -1,25 +1,23 @@
 (function () {
   try {
     // ---------------------------------------------------------
-    // 0. GUARDED SINGLE EXECUTION (COVERS MULTIPLE IFRAMES)
+    // 0. ULTRA-HARD DUPLICATE PREVENTION (fixes ghost window)
     // ---------------------------------------------------------
-    if (window.top.__OBK_WIDGET_ACTIVE__) {
-      console.log("OBK Chatbot already active in top frame – skipping duplicate");
+    if (window.__OBK_WIDGET_LOCK__ || window.top.__OBK_WIDGET_LOCK__) {
       return;
     }
-    window.top.__OBK_WIDGET_ACTIVE__ = true;
+
+    window.__OBK_WIDGET_LOCK__ = true;
+    window.top.__OBK_WIDGET_LOCK__ = true;
+
+    // Also guard against DOM duplicates
+    if (window.top.document.querySelector("#obk-button") ||
+        window.top.document.querySelector("#obk-chat-box")) {
+      return;
+    }
 
     // ---------------------------------------------------------
-    // 1. CLEAN UP ANY EXISTING ELEMENTS (PREVENT GHOST WINDOWS)
-    // ---------------------------------------------------------
-    const removeOld = () => {
-      const els = window.top.document.querySelectorAll("#obk-chat-box, #obk-button");
-      els.forEach((el) => el.remove());
-    };
-    removeOld();
-
-    // ---------------------------------------------------------
-    // 2. CREATE BUTTON
+    // 1. CREATE BUTTON
     // ---------------------------------------------------------
     const button = window.top.document.createElement("div");
     button.id = "obk-button";
@@ -43,7 +41,7 @@
     window.top.document.body.appendChild(button);
 
     // ---------------------------------------------------------
-    // 3. CHAT CONTAINER
+    // 2. CHAT BOX
     // ---------------------------------------------------------
     const box = window.top.document.createElement("div");
     box.id = "obk-chat-box";
@@ -64,7 +62,7 @@
     window.top.document.body.appendChild(box);
 
     // ---------------------------------------------------------
-    // 4. EMBED IFRAME SAFELY
+    // 3. IFRAME
     // ---------------------------------------------------------
     const iframe = window.top.document.createElement("iframe");
     iframe.src = "https://obk-lime.vercel.app/";
@@ -72,13 +70,14 @@
     box.appendChild(iframe);
 
     // ---------------------------------------------------------
-    // 5. TOGGLE LOGIC
+    // 4. TOGGLE
     // ---------------------------------------------------------
     let open = false;
     button.onclick = () => {
       open = !open;
       box.style.display = open ? "block" : "none";
     };
+
   } catch (err) {
     console.error("OBK widget error:", err);
   }
