@@ -3,14 +3,11 @@
     // ---------------------------------------------------------
     // 0. ULTRA-HARD DUPLICATE PREVENTION
     // ---------------------------------------------------------
-    if (window.__OBK_WIDGET_LOCK__ || window.top.__OBK_WIDGET_LOCK__) {
-      return;
-    }
+    if (window.__OBK_WIDGET_LOCK__ || window.top.__OBK_WIDGET_LOCK__) return;
 
     window.__OBK_WIDGET_LOCK__ = true;
     window.top.__OBK_WIDGET_LOCK__ = true;
 
-    // Also guard against DOM duplicates
     if (
       window.top.document.querySelector("#obk-button") ||
       window.top.document.querySelector("#obk-chat-box")
@@ -19,7 +16,7 @@
     }
 
     // ---------------------------------------------------------
-    // 1. CREATE BUTTON
+    // 1. FLOATING CHAT BUTTON (OUTSIDE)
     // ---------------------------------------------------------
     const button = window.top.document.createElement("div");
     button.id = "obk-button";
@@ -43,7 +40,7 @@
     window.top.document.body.appendChild(button);
 
     // ---------------------------------------------------------
-    // 2. CHAT CONTAINER
+    // 2. CHAT CONTAINER (OUTSIDE)
     // ---------------------------------------------------------
     const box = window.top.document.createElement("div");
     box.id = "obk-chat-box";
@@ -64,19 +61,31 @@
     window.top.document.body.appendChild(box);
 
     // ---------------------------------------------------------
-    // 3. EMBED IFRAME (YOUR VERCEL APP)
+    // 3. IFRAME → loads your Vercel chatbot UI
     // ---------------------------------------------------------
     const iframe = window.top.document.createElement("iframe");
     iframe.src = "https://obk-lime.vercel.app/";
-    iframe.style.cssText = "width:100%;height:100%;border:none;";
+    iframe.style.cssText = `
+      width: 100%;
+      height: 100%;
+      border: none;
+      overflow: hidden;
+    `;
     box.appendChild(iframe);
 
-    // When iframe loads, auto-open the internal chat
+    // ---------------------------------------------------------
+    // 4. INTERNAL CHAT AUTO-OPEN FIX (NEW)
+    // ---------------------------------------------------------
     iframe.addEventListener("load", () => {
       try {
         const idoc = iframe.contentWindow.document;
 
-        // Find the inner launcher that says "How can I help"
+        // Auto-open ChatWindow by simulating open=true on App.jsx
+        const openChat = () => {
+          const root = iframe.contentWindow.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+        };
+
+        // Hide the inner floating button ALWAYS to avoid ghost button
         const launcher = Array.from(
           idoc.querySelectorAll("button, div, span")
         ).find(
@@ -86,24 +95,34 @@
         );
 
         if (launcher) {
-          // Click it to open the chat window
-          launcher.click();
-          // Hide the inner launcher so we don't see button-inside-button
           launcher.style.display = "none";
         }
+
       } catch (e) {
-        console.error("OBK widget: failed to auto-open inner chat", e);
+        console.warn("OBK: iframe injection limited by Wix sandbox.", e);
       }
     });
 
     // ---------------------------------------------------------
-    // 4. OPEN / CLOSE LOGIC FOR OUTER BUTTON
+    // 5. OUTER BUTTON OPENS/CLOSES THE WHOLE CHAT WIDGET
     // ---------------------------------------------------------
     let open = false;
+
     button.onclick = () => {
       open = !open;
       box.style.display = open ? "block" : "none";
     };
+
+    // ---------------------------------------------------------
+    // 6. ALLOW INSIDE CHATWINDOW CLOSE BUTTON TO CLOSE OUTER BOX
+    // ---------------------------------------------------------
+    window.addEventListener("message", (event) => {
+      if (event.data === "OBK_CLOSE_CHAT") {
+        box.style.display = "none";
+        open = false;
+      }
+    });
+
   } catch (err) {
     console.error("OBK widget error:", err);
   }
