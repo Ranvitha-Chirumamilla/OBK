@@ -52,12 +52,28 @@
   // ---------------------------
   const chat = document.createElement("iframe");
   chat.id = "obk-chat-window";
-  chat.src = "https://obk-lime.vercel.app/"; // production chatbot
+  chat.src = "https://obk-lime.vercel.app/";
   chat.style.width = "100%";
   chat.style.height = "100%";
   chat.style.border = "0";
   chat.style.display = "block";
+
+  // Fix blank background issue
+  chat.allowTransparency = "true";
+  chat.style.background = "transparent";
+
   container.appendChild(chat);
+
+  // ⭐ VERY IMPORTANT:
+  // Tell the iframe to actually mount the ChatWindow inside React
+  chat.onload = () => {
+    try {
+      chat.contentWindow.initObkChatbot?.();
+      console.log("OBK Chatbot initialized inside iframe");
+    } catch (e) {
+      console.error("Chatbot init failed:", e);
+    }
+  };
 
   // ---------------------------
   // 4. Toggle open/close
@@ -68,7 +84,7 @@
     isOpen = !isOpen;
     container.style.display = isOpen ? "block" : "none";
 
-    // Force a reflow so Safari/iOS does not clip the top
+    // Safari/iOS fix — enforce height after toggle
     setTimeout(() => {
       chat.style.height = "100%";
     }, 10);
