@@ -1,18 +1,29 @@
 (function () {
 
-  // 0. REMOVE WIX GHOST APP CONTAINERS
+  // ------------------------------------------------------
+  // 0. SAFE FIX: Hide ONLY Wix ghost iframe (0x0)
+  // ------------------------------------------------------
   const observer = new MutationObserver(() => {
-    document.querySelectorAll("div[id^='comp-'], div[data-testid='app-container'], .TPAContainer").forEach(div => {
-      if (!div.querySelector("#obk-chat-window")) {
-        div.style.display = "none";
+    document.querySelectorAll("iframe").forEach((iframe) => {
+
+      const isGhostIframe =
+        iframe.getAttribute("height") === "0" &&
+        iframe.getAttribute("width") === "0";
+
+      if (isGhostIframe) {
+        iframe.style.display = "none";
+        if (iframe.parentElement) {
+          iframe.parentElement.style.display = "none";
+        }
       }
     });
   });
+
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // ---------------------------
+  // ------------------------------------------------------
   // 1. Create Floating Button
-  // ---------------------------
+  // ------------------------------------------------------
   const button = document.createElement("div");
   button.id = "obk-floating-button";
   button.innerHTML = `
@@ -40,9 +51,9 @@
   `;
   document.body.appendChild(button);
 
-  // ---------------------------
-  // 2. Chat container
-  // ---------------------------
+  // ------------------------------------------------------
+  // 2. Create Chat Container
+  // ------------------------------------------------------
   const container = document.createElement("div");
   container.id = "obk-chat-container";
   container.style.position = "fixed";
@@ -58,25 +69,32 @@
   container.style.overflow = "hidden";
   document.body.appendChild(container);
 
-  // ---------------------------
-  // 3. iframe
-  // ---------------------------
+  // ------------------------------------------------------
+  // 3. Create iframe inside container
+  // ------------------------------------------------------
   const chat = document.createElement("iframe");
   chat.id = "obk-chat-window";
-  chat.src = "https://obk-lime.vercel.app/";
+  chat.src = "https://obk-lime.vercel.app/"; // production chatbot
   chat.style.width = "100%";
   chat.style.height = "100%";
   chat.style.border = "0";
   chat.style.display = "block";
+  chat.allowTransparency = "true";
+  chat.style.background = "transparent";
   container.appendChild(chat);
 
-  // ---------------------------
-  // 4. Toggle
-  // ---------------------------
+  // ------------------------------------------------------
+  // 4. Toggle open/close behavior
+  // ------------------------------------------------------
   let isOpen = false;
-  button.onclick = () => {
+  button.onclick = function () {
     isOpen = !isOpen;
     container.style.display = isOpen ? "block" : "none";
+
+    // Fix height rendering on Safari/iOS
+    setTimeout(() => {
+      chat.style.height = "100%";
+    }, 10);
   };
 
 })();
