@@ -210,8 +210,8 @@ const ChatWindow = ({ onClose }) => {
 const styles = {
   overlay: {
     position: "fixed",
-    bottom: "80px",
-    right: "20px",
+    bottom: "0px",
+    right: "0px",
     zIndex: 9999,
   },
 
