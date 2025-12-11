@@ -1,32 +1,20 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import FloatingChatButton from "./FloatingChatButton";
 import ChatWindow from "./ChatWindow";
 
 export default function App() {
-  // Tell external websites (Wix) that the chatbot app has finished loading
+  const [open, setOpen] = useState(false);
+
+  // Notify external sites when chatbot is ready
   useEffect(() => {
     window.chatbotLoaded = true;
     document.dispatchEvent(new Event("OBK_CHATBOT_LOADED"));
-    console.log("🔥 OBK React App Loaded");
   }, []);
 
-  return null; // IMPORTANT: Do NOT render ChatWindow here
+  return (
+    <div style={{ minHeight: "100vh" }}>
+      {!open && <FloatingChatButton onClick={() => setOpen(true)} />}
+      {open && <ChatWindow onClose={() => setOpen(false)} />}
+    </div>
+  );
 }
-
-// ------------------------------------------------------
-// EXTERNAL INITIALIZER CALLED FROM widget.js (iframe)
-// ------------------------------------------------------
-window.initObkChatbot = function () {
-  console.log("⚡ initObkChatbot() triggered — mounting ChatWindow");
-
-  // Prevent duplicates inside iframe
-  if (document.getElementById("obk-inner-chat")) return;
-
-  const mountDiv = document.createElement("div");
-  mountDiv.id = "obk-inner-chat";
-  document.body.appendChild(mountDiv);
-
-  import("react-dom/client").then((module) => {
-    const root = module.createRoot(mountDiv);
-    root.render(<ChatWindow />);
-  });
-};
