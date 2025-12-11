@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import ChatWindow from "./ChatWindow";
 
 export default function App() {
 
@@ -8,5 +7,5 @@ export default function App() {
     document.dispatchEvent(new Event("OBK_CHATBOT_LOADED"));
   }, []);
 
-  return <ChatWindow />;
+  return null;   // ⛔ IMPORTANT: do NOT render ChatWindow
 }
