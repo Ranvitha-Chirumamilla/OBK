@@ -14,38 +14,30 @@ const ChatWindow = ({ onClose }) => {
   const [lastUnknown, setLastUnknown] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
-  // Reset fallback logic when correct answer or button is clicked
+  // Detect if running inside OBK iframe
+  const isIframe = window.self !== window.top;
+
   const resetState = () => {
     setAttemptCount(0);
     setLastUnknown("");
     setShowOptions(false);
   };
 
-  // ---------------------------
-  // 🔥 MAIN BOT LOGIC
-  // ---------------------------
   const askBot = () => {
     if (!input.trim()) return;
     const userMsg = input.toLowerCase().trim();
 
-    // Add user message to screen
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
     let bestAnswer = null;
     let bestScore = 0;
 
-    // ---------------------------
-    // 1. GREETING DETECTION
-    // ---------------------------
     const greetings = ["hi", "hello", "hey", "good morning", "good evening", "good afternoon"];
     if (greetings.some((g) => userMsg.includes(g))) {
       resetState();
       bestAnswer = "Hello! How can I help you with OBK information today?";
     }
 
-    // ---------------------------
-    // 2. EXACT MATCH
-    // ---------------------------
     if (!bestAnswer) {
       const cleanUser = userMsg.replace(/[^\w\s]/g, "");
       for (let item of dataset) {
@@ -59,9 +51,6 @@ const ChatWindow = ({ onClose }) => {
       }
     }
 
-    // ---------------------------
-    // 3. STARTS-WITH MATCH
-    // ---------------------------
     if (!bestAnswer) {
       for (let item of dataset) {
         if (item.question.toLowerCase().startsWith(userMsg.substring(0, 5))) {
@@ -73,9 +62,6 @@ const ChatWindow = ({ onClose }) => {
       }
     }
 
-    // ---------------------------
-    // 4. FUZZY MATCH
-    // ---------------------------
     if (!bestAnswer) {
       dataset.forEach((item) => {
         const q = item.question.toLowerCase();
@@ -93,26 +79,19 @@ const ChatWindow = ({ onClose }) => {
         }
       });
 
-      // If fuzzy matched but low confidence → treat as match
       if (bestScore > 0) resetState();
       else bestAnswer = null;
     }
 
-    // ---------------------------
-    // 5. UNKNOWN QUESTION HANDLING (Correct 3-step fallback)
-    // ---------------------------
     if (!bestAnswer) {
       const newCount = userMsg === lastUnknown ? attemptCount + 1 : 1;
-
       setLastUnknown(userMsg);
       setAttemptCount(newCount);
 
       if (newCount === 1) {
-        bestAnswer =
-          "Sorry, I don’t have that information — could you rephrase your question?";
+        bestAnswer = "Sorry, I don’t have that information — could you rephrase your question?";
       } else if (newCount === 2) {
-        bestAnswer =
-          "I'm still not finding that — could you try asking in a different way?";
+        bestAnswer = "I'm still not finding that — could you try asking in a different way?";
       } else if (newCount >= 3) {
         bestAnswer =
           "Which would you like to know more about:\n\n Volunteering Individually or Event/General Enquiries?";
@@ -124,19 +103,14 @@ const ChatWindow = ({ onClose }) => {
       return;
     }
 
-    // SUCCESS MATCH → RESET ATTEMPTS
     resetState();
     setMessages((prev) => [...prev, { sender: "bot", text: bestAnswer }]);
     setInput("");
   };
 
-  // ---------------------------
-  // BUTTON HANDLERS
-  // ---------------------------
   const handleVolunteerClick = () => {
     const response =
       "To learn more about volunteering individually, please email our Volunteer Coordinator at volunteers@obk.org.au.\n\nIs there anything else I can help you with?";
-    
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
   };
@@ -144,7 +118,6 @@ const ChatWindow = ({ onClose }) => {
   const handleProgramClick = () => {
     const response =
       "To learn more about program and event details, please email our Admin team at info@obk.org.au.\n\nIs there anything else I can help you with?";
-    
     setMessages((prev) => [...prev, { sender: "bot", text: response }]);
     resetState();
   };
@@ -152,14 +125,18 @@ const ChatWindow = ({ onClose }) => {
   return (
     <div style={styles.overlay}>
       <div style={styles.window}>
-        
+
         {/* HEADER */}
         <div style={styles.header}>
           <span style={styles.headerTitle}>Carrie of OBK</span>
-          <button style={styles.closeBtn} onClick={onClose}>✖</button>
+
+          {/* Hide Close button inside iframe */}
+          {!isIframe && (
+            <button style={styles.closeBtn} onClick={onClose}>✖</button>
+          )}
         </div>
 
-        {/* MESSAGES */}
+        {/* Messages */}
         <div style={styles.messages}>
           {messages.map((msg, i) => (
             <div
@@ -181,13 +158,13 @@ const ChatWindow = ({ onClose }) => {
                 Volunteering Individually
               </button>
               <button style={styles.optionBtn} onClick={handleProgramClick}>
-               Event Details/General Enquiries
+                Event Details/General Enquiries
               </button>
             </div>
           )}
         </div>
 
-        {/* INPUT */}
+        {/* Input */}
         <div style={styles.inputArea}>
           <input
             style={styles.input}
@@ -204,14 +181,11 @@ const ChatWindow = ({ onClose }) => {
   );
 };
 
-// ---------------------------
-// 🎨 STYLES
-// ---------------------------
 const styles = {
   overlay: {
     position: "fixed",
-    bottom: "0px",
-    right: "0px",
+    bottom: 0,
+    right: 0,
     zIndex: 9999,
   },
 
@@ -302,6 +276,3 @@ const styles = {
 };
 
 export default ChatWindow;
-
-
-
