@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dataset from "./BigkitchenOBKAustralia_dataset.json";
 
 const ChatWindow = ({ onClose }) => {
@@ -11,6 +11,18 @@ const ChatWindow = ({ onClose }) => {
   const [lastUnknown, setLastUnknown] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
+  // Remove padding/margins inside iframe to avoid extra border
+  useEffect(() => {
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+  }, []);
+
+  // Tell parent widget.js to close container
+  const closeChat = () => {
+    window.parent.postMessage("OBK_CLOSE_CHAT", "*");
+    if (onClose) onClose();
+  };
+
   const resetState = () => {
     setAttemptCount(0);
     setLastUnknown("");
@@ -19,19 +31,21 @@ const ChatWindow = ({ onClose }) => {
 
   const askBot = () => {
     if (!input.trim()) return;
-    const userMsg = input.toLowerCase().trim();
 
+    const userMsg = input.toLowerCase().trim();
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
     let bestAnswer = null;
     let bestScore = 0;
 
+    // Greeting detection
     const greetings = ["hi", "hello", "hey", "good morning", "good evening", "good afternoon"];
     if (greetings.some((g) => userMsg.includes(g))) {
       resetState();
       bestAnswer = "Hello! How can I help you with OBK information today?";
     }
 
+    // Exact match
     if (!bestAnswer) {
       const cleanUser = userMsg.replace(/[^\w\s]/g, "");
       for (let item of dataset) {
@@ -45,6 +59,7 @@ const ChatWindow = ({ onClose }) => {
       }
     }
 
+    // Starts-with match
     if (!bestAnswer) {
       for (let item of dataset) {
         if (item.question.toLowerCase().startsWith(userMsg.substring(0, 5))) {
@@ -56,6 +71,7 @@ const ChatWindow = ({ onClose }) => {
       }
     }
 
+    // Fuzzy match
     if (!bestAnswer) {
       dataset.forEach((item) => {
         const q = item.question.toLowerCase();
@@ -77,9 +93,9 @@ const ChatWindow = ({ onClose }) => {
       else bestAnswer = null;
     }
 
+    // Unknown handling
     if (!bestAnswer) {
       const newCount = userMsg === lastUnknown ? attemptCount + 1 : 1;
-
       setLastUnknown(userMsg);
       setAttemptCount(newCount);
 
@@ -102,25 +118,7 @@ const ChatWindow = ({ onClose }) => {
     setInput("");
   };
 
-  // -----------------------------------------------------------------------
-  // 🌟 FIX: ENSURE CLOSE BUTTON WORKS INSIDE WIX (iframe → parent)
-  // -----------------------------------------------------------------------
-  const handleClose = () => {
-    if (typeof onClose === "function") {
-      onClose(); // closes internal chat
-    }
-
-    // Send message to parent Wix site to close outer widget
-    try {
-      window.parent.postMessage("OBK_CLOSE_CHAT", "*");
-    } catch (e) {
-      console.error("PostMessage failed", e);
-    }
-  };
-
-  // -----------------------------------------------------------------------
-  // STYLES
-  // -----------------------------------------------------------------------
+  // ----------- STYLES FIXED (No extra border) ----------
   const styles = {
     overlay: {
       position: "fixed",
@@ -133,19 +131,21 @@ const ChatWindow = ({ onClose }) => {
       alignItems: "flex-end",
       zIndex: 2147483647,
       pointerEvents: "none",
+      background: "transparent",
     },
 
     window: {
-      width: "350px",
-      height: "500px",
+      width: "380px",
+      height: "520px",
       background: "white",
-      borderRadius: "10px",
+      borderRadius: "14px",
       display: "flex",
       flexDirection: "column",
-      boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
-      margin: "20px",
-      zIndex: 2147483647,
+      boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
       pointerEvents: "auto",
+      margin: "0px",        // removed spacing
+      overflow: "hidden",   // no border bleed
+      border: "none"
     },
 
     header: {
@@ -164,7 +164,6 @@ const ChatWindow = ({ onClose }) => {
       color: "white",
       fontSize: "20px",
       cursor: "pointer",
-      padding: "4px",
     },
 
     messages: {
@@ -206,21 +205,15 @@ const ChatWindow = ({ onClose }) => {
       borderRadius: "6px",
       cursor: "pointer",
       fontWeight: "bold",
-    },
+    }
   };
-
-  // -----------------------------------------------------------------------
 
   return (
     <div style={styles.overlay}>
       <div style={styles.window}>
         <div style={styles.header}>
           <span>Carrie of OBK</span>
-
-          {/* FIXED CLOSE BUTTON */}
-          <button style={styles.closeBtn} onClick={handleClose}>
-            ✖
-          </button>
+          <button style={styles.closeBtn} onClick={closeChat}>✖</button>
         </div>
 
         <div style={styles.messages}>
