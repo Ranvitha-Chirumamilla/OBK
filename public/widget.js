@@ -1,7 +1,7 @@
 (function () {
   try {
     // ---------------------------------------------------------
-    // 0. ULTRA-HARD DUPLICATE PREVENTION
+    // 0. STOP DUPLICATES
     // ---------------------------------------------------------
     if (window.__OBK_WIDGET_LOCK__ || window.top.__OBK_WIDGET_LOCK__) return;
 
@@ -16,7 +16,7 @@
     }
 
     // ---------------------------------------------------------
-    // 1. FLOATING CHAT BUTTON (OUTSIDE)
+    // 1. OUTER FLOATING BUTTON
     // ---------------------------------------------------------
     const button = window.top.document.createElement("div");
     button.id = "obk-button";
@@ -40,7 +40,7 @@
     window.top.document.body.appendChild(button);
 
     // ---------------------------------------------------------
-    // 2. CHAT CONTAINER (OUTSIDE)
+    // 2. OUTER CHAT BOX
     // ---------------------------------------------------------
     const box = window.top.document.createElement("div");
     box.id = "obk-chat-box";
@@ -61,7 +61,7 @@
     window.top.document.body.appendChild(box);
 
     // ---------------------------------------------------------
-    // 3. IFRAME → loads your Vercel chatbot UI
+    // 3. IFRAME to load Vercel chatbot
     // ---------------------------------------------------------
     const iframe = window.top.document.createElement("iframe");
     iframe.src = "https://obk-lime.vercel.app/";
@@ -69,42 +69,34 @@
       width: 100%;
       height: 100%;
       border: none;
-      overflow: hidden;
     `;
     box.appendChild(iframe);
 
     // ---------------------------------------------------------
-    // 4. INTERNAL CHAT AUTO-OPEN FIX (NEW)
+    // 4. INSIDE IFRAME CLEANUP — remove ghost button
     // ---------------------------------------------------------
     iframe.addEventListener("load", () => {
       try {
         const idoc = iframe.contentWindow.document;
 
-        // Auto-open ChatWindow by simulating open=true on App.jsx
-        const openChat = () => {
-          const root = iframe.contentWindow.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-        };
-
-        // Hide the inner floating button ALWAYS to avoid ghost button
+        // Hide inner floating button always
         const launcher = Array.from(
           idoc.querySelectorAll("button, div, span")
         ).find(
-          (el) =>
+          el =>
             el.textContent &&
             el.textContent.toLowerCase().includes("how can i help")
         );
 
-        if (launcher) {
-          launcher.style.display = "none";
-        }
+        if (launcher) launcher.style.display = "none";
 
       } catch (e) {
-        console.warn("OBK: iframe injection limited by Wix sandbox.", e);
+        console.warn("OBK widget: Cannot modify iframe due to Wix sandbox.", e);
       }
     });
 
     // ---------------------------------------------------------
-    // 5. OUTER BUTTON OPENS/CLOSES THE WHOLE CHAT WIDGET
+    // 5. BUTTON LOGIC — open/close full widget
     // ---------------------------------------------------------
     let open = false;
 
@@ -114,7 +106,7 @@
     };
 
     // ---------------------------------------------------------
-    // 6. ALLOW INSIDE CHATWINDOW CLOSE BUTTON TO CLOSE OUTER BOX
+    // 6. LISTEN FOR CLOSE SIGNAL FROM INSIDE CHAT WINDOW
     // ---------------------------------------------------------
     window.addEventListener("message", (event) => {
       if (event.data === "OBK_CLOSE_CHAT") {
