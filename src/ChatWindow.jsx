@@ -3,10 +3,7 @@ import dataset from "./BigkitchenOBKAustralia_dataset.json";
 
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
-    {
-      sender: "bot",
-      text: "Hi! I’m Carrie. How can I help you today?",
-    },
+    { sender: "bot", text: "Hi! I’m Carrie. How can I help you today?" }
   ]);
 
   const [input, setInput] = useState("");
@@ -82,16 +79,16 @@ const ChatWindow = ({ onClose }) => {
 
     if (!bestAnswer) {
       const newCount = userMsg === lastUnknown ? attemptCount + 1 : 1;
+
       setLastUnknown(userMsg);
       setAttemptCount(newCount);
 
       if (newCount === 1) {
         bestAnswer = "Sorry, I don’t have that information — could you rephrase your question?";
       } else if (newCount === 2) {
-        bestAnswer = "I'm still not finding that — could you try asking in a different way?";
+        bestAnswer = "I'm still not finding that — could you try asking differently?";
       } else if (newCount >= 3) {
-        bestAnswer =
-          "Which would you like to know more about:\n\n Volunteering Individually or Event/General Enquiries?";
+        bestAnswer = "Which would you like to know more about?";
         setShowOptions(true);
       }
 
@@ -105,31 +102,100 @@ const ChatWindow = ({ onClose }) => {
     setInput("");
   };
 
-  const handleVolunteerClick = () => {
-    const response =
-      "To learn more about volunteering individually, please email our Volunteer Coordinator at volunteers@obk.org.au.\n\nIs there anything else I can help you with?";
-    setMessages((prev) => [...prev, { sender: "bot", text: response }]);
-    resetState();
-  };
+  const styles = {
+    overlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "flex-end",
+      zIndex: 9999,
+      pointerEvents: "none", // allow background clicks
+    },
 
-  const handleProgramClick = () => {
-    const response =
-      "To learn more about program and event details, please email our Admin team at info@obk.org.au.\n\nIs there anything else I can help you with?";
-    setMessages((prev) => [...prev, { sender: "bot", text: response }]);
-    resetState();
+    window: {
+      width: "350px",
+      height: "500px",
+      background: "white",
+      borderRadius: "10px",
+      display: "flex",
+      flexDirection: "column",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
+      margin: "20px",
+      pointerEvents: "auto", // window is clickable
+    },
+
+    header: {
+      background: "#2e7d32",
+      padding: "12px",
+      display: "flex",
+      justifyContent: "space-between",
+      color: "white",
+      fontWeight: "bold",
+      alignItems: "center",
+    },
+
+    messages: {
+      flex: 1,
+      padding: "12px",
+      overflowY: "auto",
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+    },
+
+    messageBubble: {
+      padding: "10px 14px",
+      borderRadius: "10px",
+      maxWidth: "75%",
+      fontSize: "14px",
+    },
+
+    inputArea: {
+      display: "flex",
+      padding: "10px",
+      borderTop: "1px solid #ccc",
+      background: "#fafafa",
+    },
+
+    input: {
+      flex: 1,
+      padding: "8px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+    },
+
+    sendBtn: {
+      background: "#ff9800",
+      border: "none",
+      color: "white",
+      padding: "10px 16px",
+      marginLeft: "8px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+    },
+
+    closeBtn: {
+      background: "transparent",
+      border: "none",
+      color: "white",
+      fontSize: "18px",
+      cursor: "pointer",
+    },
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.window}>
-
-        {/* HEADER */}
         <div style={styles.header}>
-          <span style={styles.headerTitle}>Carrie of OBK</span>
+          <span>Carrie of OBK</span>
           <button style={styles.closeBtn} onClick={onClose}>✖</button>
         </div>
 
-        {/* MESSAGES */}
         <div style={styles.messages}>
           {messages.map((msg, i) => (
             <div
@@ -144,20 +210,8 @@ const ChatWindow = ({ onClose }) => {
               {msg.text}
             </div>
           ))}
-
-          {showOptions && (
-            <div style={styles.optionContainer}>
-              <button style={styles.optionBtn} onClick={handleVolunteerClick}>
-                Volunteering Individually
-              </button>
-              <button style={styles.optionBtn} onClick={handleProgramClick}>
-                Event Details/General Enquiries
-              </button>
-            </div>
-          )}
         </div>
 
-        {/* INPUT */}
         <div style={styles.inputArea}>
           <input
             style={styles.input}
@@ -168,115 +222,9 @@ const ChatWindow = ({ onClose }) => {
           />
           <button style={styles.sendBtn} onClick={askBot}>Send</button>
         </div>
-
       </div>
     </div>
   );
-};
-
-/* ----------------------------------
-   🎨 STYLES — FIXED VERSION
------------------------------------- */
-const styles = {
-  overlay: {
-    position: "fixed",
-    bottom: "0px",
-    right: "0px",
-    zIndex: 9999,
-  },
-
-  window: {
-    width: "100%",       // fill iframe width → NO WHITE GAP
-    maxWidth: "400px",   // safe limit on desktop
-    height: "500px",
-    background: "white",
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-    overflow: "hidden",
-  },
-
-  header: {
-    background: "#2e7d32",
-    padding: "12px",
-    display: "flex",
-    justifyContent: "space-between",
-    color: "white",
-    fontWeight: "bold",
-    alignItems: "center",
-  },
-
-  headerTitle: {
-    fontSize: "16px",
-  },
-
-  closeBtn: {
-    background: "transparent",
-    border: "none",
-    color: "white",
-    fontSize: "18px",
-    cursor: "pointer",
-  },
-
-  messages: {
-    flex: 1,
-    padding: "12px",
-    overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  },
-
-  messageBubble: {
-    padding: "10px 14px",
-    borderRadius: "10px",
-    maxWidth: "75%",
-    fontSize: "14px",
-  },
-
-  inputArea: {
-    display: "flex",
-    padding: "10px",
-    borderTop: "1px solid #ccc",
-    background: "#fafafa",
-  },
-
-  input: {
-    flex: 1,
-    padding: "8px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-  },
-
-  sendBtn: {
-    background: "#ff9800",
-    border: "none",
-    color: "white",
-    padding: "10px 16px",
-    marginLeft: "8px",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-
-  optionContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-    marginTop: "8px",
-  },
-
-  optionBtn: {
-    background: "#2e7d32",
-    padding: "10px",
-    borderRadius: "6px",
-    border: "none",
-    color: "white",
-    cursor: "pointer",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
 };
 
 export default ChatWindow;
