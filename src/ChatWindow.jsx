@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import dataset from "./BigkitchenOBKAustralia_dataset.json";
 
+const linkifyText = (text) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, (url) => {
+    const cleanUrl = url.replace(/[.,)]*$/, ""); // ✅ strip trailing punctuation
+    return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>`;
+  });
+};
+
+
 const ChatWindow = ({ onClose }) => {
   const [messages, setMessages] = useState([
     { sender: "bot", text: "Hi! I’m Carrie. How can I help you today?" }
@@ -37,6 +46,7 @@ const ChatWindow = ({ onClose }) => {
 
     let bestAnswer = null;
     let bestScore = 0;
+    const FUZZY_THRESHOLD = 2;
 
     // Greeting detection
     const greetings = ["hi", "hello", "hey", "good morning", "good evening", "good afternoon"];
@@ -89,8 +99,12 @@ const ChatWindow = ({ onClose }) => {
         }
       });
 
-      if (bestScore > 0) resetState();
-      else bestAnswer = null;
+      if (bestScore >= FUZZY_THRESHOLD) {
+        resetState();
+      }
+      else {
+        bestAnswer = null;
+      }
     }
 
     // Unknown handling
@@ -176,10 +190,13 @@ const ChatWindow = ({ onClose }) => {
     },
 
     messageBubble: {
-      padding: "10px 14px",
+      padding: "12px 16px",
       borderRadius: "10px",
       maxWidth: "75%",
       fontSize: "14px",
+      wordBreak: "break-word",
+      overflowWrap: "anywhere",
+      whiteSpace: "pre-wrap"
     },
 
     inputArea: {
@@ -227,10 +244,17 @@ const ChatWindow = ({ onClose }) => {
                 color: msg.sender === "user" ? "white" : "black",
               }}
             >
-              {msg.text}
+              {msg.sender === "bot" ? (
+                <span
+                  dangerouslySetInnerHTML={{ __html: linkifyText(msg.text) }}
+                />
+              ) : (
+                msg.text
+              )}
             </div>
           ))}
         </div>
+
 
         <div style={styles.inputArea}>
           <input
