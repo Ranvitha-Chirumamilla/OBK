@@ -118,7 +118,10 @@ const ChatWindow = ({ onClose }) => {
       } else if (newCount === 2) {
         bestAnswer = "I'm still not finding that — could you try asking differently?";
       } else if (newCount >= 3) {
-        bestAnswer = "Which would you like to know more about?";
+        bestAnswer = "Which would you like to know more about?\n\n" +
+          "Volunteering Individually — Email our Volunteer Coordinator at volunteers@obk.org.au\n\n" +
+          "Program Details — Email our Admin at info@obk.org.au\n\n" +
+          "Is there anything else that I can help you with today?";
         setShowOptions(true);
       }
 
