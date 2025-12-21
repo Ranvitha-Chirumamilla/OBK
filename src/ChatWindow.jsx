@@ -109,15 +109,14 @@ const ChatWindow = ({ onClose }) => {
 
     // Unknown handling
     if (!bestAnswer) {
-      const newCount = userMsg === lastUnknown ? attemptCount + 1 : 1;
-      setLastUnknown(userMsg);
+      const newCount = attemptCount + 1;
       setAttemptCount(newCount);
 
       if (newCount === 1) {
         bestAnswer = "Sorry, I don’t have that information — could you rephrase your question?";
       } else if (newCount === 2) {
         bestAnswer = "I'm still not finding that — could you try asking differently?";
-      } else if (newCount >= 3) {
+      } else {
         bestAnswer = "Which would you like to know more about?\n\n" +
           "Volunteering Individually — Email our Volunteer Coordinator at volunteers@obk.org.au\n\n" +
           "Program Details — Email our Admin at info@obk.org.au\n\n" +
