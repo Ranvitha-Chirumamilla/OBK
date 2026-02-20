@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import { Analytics } from "@vercel/analytics/react"; // ✅ ADD THIS
 
 // ✅ Add this BEFORE index.css so resets apply globally
 import "./reset.css";
-
 import "./index.css";
 
 const WIDGET_CONTAINER_ID = "obk-chat-widget";
@@ -22,5 +22,6 @@ if (!mountNode) {
 ReactDOM.createRoot(mountNode).render(
   <React.StrictMode>
     <App />
+    <Analytics /> {/* ✅ ADD THIS */}
   </React.StrictMode>
 );
