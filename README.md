@@ -5,7 +5,6 @@ Floating FAQ Assistant for Our Big Kitchen (OBK), Australia
 
 This project is a floating chatbot designed to help visitors get quick answers about OBK programs, volunteering, events, and general information. The chatbot appears as a small button in the lower-right corner of the website. When clicked, a chat window opens and responds using a predefined FAQ dataset.
 
-
 ## Purpose
 
 1) Reducing browsing time
@@ -72,3 +71,6 @@ This project is a floating chatbot designed to help visitors get quick answers a
     No coding is needed.  
    2) If you want to change how the chatbot looks or behaves, make the changes, test it locally first, and then push to GitHub.  
    3) If the chatbot stops appearing on the OBK website, check that the script link is still correct in Wix and refresh the website cache.
+
+
+   
